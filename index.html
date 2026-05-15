@@ -1,98 +1,255 @@
 <!DOCTYPE html>
-<html lang="zh-Hant">
+<html lang="zh-TW">
 <head>
-<meta charset="UTF-8" />
-<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>鑫富翁 XFWWIN - 免儲值先上桌</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@700;900&display=swap');
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
 
-<title>鑫富翁 官方入口</title>
+        html, body {
+            width: 100%;
+            height: 100%;
+            overflow: hidden;
+            font-family: 'Noto Sans TC', sans-serif;
+        }
 
-<style>
+        body {
+            position: relative;
+            background: #000;
+        }
 
-*{
-    margin:0;
-    padding:0;
-    box-sizing:border-box;
-}
+        /* 全屏背景圖片 */
+        .bg-image {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 0;
+        }
 
-body{
-    width:100%;
-    height:100vh;
-    overflow:hidden;
-    background:black;
-    font-family:sans-serif;
-}
+        .bg-image img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            object-position: center;
+        }
 
-.main{
-    position:relative;
-    width:100%;
-    height:100vh;
-}
+        /* 主容器 */
+        .container {
+            position: relative;
+            z-index: 1;
+            width: 100%;
+            height: 100%;
+            display: flex;
+            flex-direction: column;
+            justify-content: flex-end;
+            padding: 0 20px 40px;
+        }
 
-.bg{
-    width:100%;
-    height:100%;
-    object-fit:cover;
-}
+        /* 社群按鈕容器 */
+        .social-buttons {
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+            width: 100%;
+            max-width: 500px;
+            margin: 0 auto;
+            animation: slideUp 0.8s ease-out;
+        }
 
-.overlay{
-    position:absolute;
-    inset:0;
-    background:linear-gradient(
-        to top,
-        rgba(0,0,0,0.75),
-        rgba(0,0,0,0.1)
-    );
-}
+        @keyframes slideUp {
+            from {
+                opacity: 0;
+                transform: translateY(50px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
 
-.button-wrap{
-    position:absolute;
-    bottom:45px;
-    left:50%;
-    transform:translateX(-50%);
-    width:82%;
-    max-width:420px;
-}
+        /* 社群按鈕 */
+        .social-btn {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 100%;
+            padding: 16px 30px;
+            border: none;
+            border-radius: 50px;
+            font-size: 20px;
+            font-weight: 700;
+            text-decoration: none;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+            letter-spacing: 1px;
+            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.3);
+        }
 
-.open-btn{
-    display:block;
-    width:100%;
-    transition:0.25s;
-}
+        .social-btn::before {
+            content: '';
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            width: 0;
+            height: 0;
+            border-radius: 50%;
+            background: rgba(255, 255, 255, 0.25);
+            transform: translate(-50%, -50%);
+            transition: width 0.5s, height 0.5s;
+        }
 
-.open-btn img{
-    width:100%;
-    display:block;
-}
+        .social-btn:active::before {
+            width: 400px;
+            height: 400px;
+        }
 
-.open-btn:hover{
-    transform:scale(1.03);
-}
+        .social-btn span {
+            position: relative;
+            z-index: 1;
+        }
 
-</style>
+        /* LINE 按鈕 */
+        .btn-line {
+            background: linear-gradient(135deg, #00B900 0%, #00C300 100%);
+            color: white;
+        }
+
+        .btn-line:active {
+            transform: scale(0.98);
+            box-shadow: 0 5px 15px rgba(0, 185, 0, 0.5);
+        }
+
+        /* Telegram 按鈕 */
+        .btn-telegram {
+            background: linear-gradient(135deg, #0088cc 0%, #229ED9 100%);
+            color: white;
+        }
+
+        .btn-telegram:active {
+            transform: scale(0.98);
+            box-shadow: 0 5px 15px rgba(0, 136, 204, 0.5);
+        }
+
+        /* Discord 按鈕 */
+        .btn-discord {
+            background: linear-gradient(135deg, #5865F2 0%, #7289DA 100%);
+            color: white;
+        }
+
+        .btn-discord:active {
+            transform: scale(0.98);
+            box-shadow: 0 5px 15px rgba(88, 101, 242, 0.5);
+        }
+
+        /* 按鈕圖標 */
+        .btn-icon {
+            width: 28px;
+            height: 28px;
+            margin-right: 10px;
+            filter: drop-shadow(0 2px 3px rgba(0, 0, 0, 0.2));
+        }
+
+        /* 響應式設計 */
+        @media (max-width: 480px) {
+            .container {
+                padding: 0 15px 30px;
+            }
+
+            .social-buttons {
+                gap: 12px;
+            }
+
+            .social-btn {
+                font-size: 18px;
+                padding: 14px 25px;
+            }
+
+            .btn-icon {
+                width: 24px;
+                height: 24px;
+                margin-right: 8px;
+            }
+        }
+
+        /* 橫屏模式優化 */
+        @media (orientation: landscape) and (max-height: 500px) {
+            .container {
+                padding: 20px 20px 25px;
+            }
+
+            .social-buttons {
+                gap: 10px;
+            }
+
+            .social-btn {
+                padding: 12px 25px;
+                font-size: 16px;
+            }
+        }
+    </style>
 </head>
-
 <body>
+    <!-- 全屏背景圖片 -->
+    <div class="bg-image">
+        <img src="Photoroom_20260515_135947.png" alt="金富翁 XFWWIN" id="bgImage">
+    </div>
+    
+    <!-- 底部按鈕區 -->
+    <div class="container">
+        <div class="social-buttons">
+            <!-- LINE 按鈕 -->
+            <a href="https://line.me/ti/p/" class="social-btn btn-line" target="_blank">
+                <svg class="btn-icon" viewBox="0 0 24 24" fill="white">
+                    <path d="M19.365 9.863c.349 0 .63.285.63.631 0 .345-.281.63-.63.63H17.61v1.125h1.755c.349 0 .63.283.63.63 0 .344-.281.629-.63.629h-2.386c-.345 0-.627-.285-.627-.629V8.108c0-.345.282-.63.63-.63h2.386c.346 0 .627.285.627.63 0 .349-.281.63-.63.63H17.61v1.125h1.755zm-3.855 3.016c0 .27-.174.51-.432.596-.064.021-.133.031-.199.031-.211 0-.391-.09-.51-.25l-2.443-3.317v2.94c0 .344-.279.629-.631.629-.346 0-.626-.285-.626-.629V8.108c0-.27.173-.51.43-.595.06-.023.136-.033.194-.033.195 0 .375.104.495.254l2.462 3.33V8.108c0-.345.282-.63.63-.63.345 0 .63.285.63.63v4.771zm-5.741 0c0 .344-.282.629-.631.629-.345 0-.627-.285-.627-.629V8.108c0-.345.282-.63.63-.63.346 0 .628.285.628.63v4.771zm-2.466.629H4.917c-.345 0-.63-.285-.63-.629V8.108c0-.345.285-.63.63-.63.348 0 .63.285.63.63v4.141h1.756c.348 0 .629.283.629.63 0 .344-.282.629-.629.629M24 10.314C24 4.943 18.615.572 12 .572S0 4.943 0 10.314c0 4.811 4.27 8.842 10.035 9.608.391.082.923.258 1.058.59.12.301.079.766.038 1.08l-.164 1.02c-.045.301-.24 1.186 1.049.645 1.291-.539 6.916-4.078 9.436-6.975C23.176 14.393 24 12.458 24 10.314"/>
+                </svg>
+                <span>加入 LINE 官方</span>
+            </a>
+        </div>
+    </div>
 
-<div class="main">
+    <script>
+        // 防止快速連點
+        let clickTimeout;
+        document.querySelectorAll('.social-btn').forEach(btn => {
+            btn.addEventListener('click', function(e) {
+                if (clickTimeout) {
+                    e.preventDefault();
+                    return;
+                }
+                clickTimeout = setTimeout(() => {
+                    clickTimeout = null;
+                }, 800);
+                
+                // 可以在這裡加入 Google Analytics 追蹤
+                console.log('點擊:', this.querySelector('span').textContent);
+            });
+        });
 
-<!-- 主背景圖 -->
-<img class="bg" src="main.jpg">
+        // 防止頁面縮放（適用於 iOS）
+        document.addEventListener('gesturestart', function(e) {
+            e.preventDefault();
+        });
 
-<div class="overlay"></div>
-
-<!-- 開版按鈕 -->
-<div class="button-wrap">
-
-<a class="open-btn"
-href="https://line.me/R/ti/p/@YOUR_LINE_ID">
-
-<img src="button.png">
-
-</a>
-
-</div>
-
-</div>
-
+        // 防止雙擊縮放
+        let lastTouchEnd = 0;
+        document.addEventListener('touchend', function(e) {
+            const now = Date.now();
+            if (now - lastTouchEnd <= 300) {
+                e.preventDefault();
+            }
+            lastTouchEnd = now;
+        }, false);
+    </script>
 </body>
 </html>
